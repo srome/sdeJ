@@ -46,6 +46,6 @@ public class InterpolatedFunctionTest {
         BivariateFunction g = FunctionUtils.affine(0d, 0d, 0d);
         Problem problem = new Problem(f,g,initialValue, initialTime, endTime, numberOfSteps);
 
-        return problem.getInterpolatedFunction();
+        return problem.getSolutionAsFunction();
     }
 }

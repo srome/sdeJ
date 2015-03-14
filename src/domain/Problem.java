@@ -109,7 +109,7 @@ public class Problem {
      * @return A class extending Function.
      * @throws SdeJException
      */
-    public InterpolatedFunction getInterpolatedFunction() throws SdeJException {
+    public InterpolatedFunction getSolutionAsFunction() throws SdeJException {
         if (solution == null) {
             solve();
         }
