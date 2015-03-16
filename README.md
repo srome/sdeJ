@@ -1,14 +1,13 @@
 # sdeJ
 A lightweight first order stochastic differential equation solver with support for ordinary differential equations.
 
-
 # Running Instructions
 sdeJ is designed to solve first order stochastic differential equations numerically and return a class which extends
 Function<Double, Double> as an output. This class will act as a function representing the solution to the SDE
 via the evaluate(Double t) and apply(Double t) methods. Multiple examples of use are in the test package. We will also
 walk through an example here:
 
-Say you wish to solve for the solution y of the SDE  dy = f(t,y) dt + g(t,y)dW. sdeJ will return to you the class
+Say you wish to solve for the solution y of the SDE dy = f(t,y)*dt + g(t,y)*dW. sdeJ will return to you the class
 InterpolatedFunction which is a representation of the solution y. Then, one may evaluate this approximate solution at
 any point within its domain.
 The basic steps are:
