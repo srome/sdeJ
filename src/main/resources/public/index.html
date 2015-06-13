@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>serialize demo</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="sde.js"></script>
+    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script>
+        function drawChart() {
+            $('#page').css("visibility","visible");
+            $('#loading').css("visibility","hidden");
+        }
+
+        //loading chart library and display page
+        google.load('visualization', '1', {
+        packages: ['corechart']
+        });
+        google.setOnLoadCallback(drawChart);
+
+    </script>
+    <style>
+        #page {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loading">Loading...</div>
+
+<div id="page">
+    <form>
+        <select name="equation" id="eqSelect">
+            <option value="bm">Brownian Motion</option>
+            <option value="gbm">Geometric Brownian Motion</option>
+        </select>
+    </form>
+
+    <form id="attributes">
+
+        <br>
+        <label for="drift">Drift</label> : <input type="text" name="drift" id="drift" value = .5>
+        <br>
+        <label for="scale">Scale</label> : <input type="text" name="scale" id="scale" value = 1> ( scale^2 = variance )
+        <br>
+        <label for="initialValue">Initial Value</label> : <input type="text" name="initialValue" id="initialValue" value = 1>
+        <br>
+        <label for="timeStep">Time Step</label> : <input type="text" name="timeStep" id="timeStep" value=".001">
+        <br>
+        <label for="numberOfSteps">Number of Time Steps</label> : <input type="text" name="numberOfSteps" id="numberOfSteps" value="1000">
+    </form>
+
+    <button id="theButton">Calculate</button>
+
+    <div id="chart" style="width=100%;"></div>
+</div>
+</body>
+</html>

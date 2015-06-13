@@ -1,8 +1,10 @@
-package domain;
+package com.domain;
 
 
-import math.GenericDE;
-import math.Solver;
+import com.solver.NumericSolver;
+import com.solver.NumericSolverImpl;
+
+import java.util.function.BiFunction;
 
 /**
  * This class is represents the first order first order SDE dy=f(t,y)dt + g(t,y)dW. When g=0, this problem will be an ODE.
@@ -10,8 +12,8 @@ import math.Solver;
  * @author Scott Rome
  */
 public class Problem {
-    final private BivariateFunction f, g;
-    final private Solver solver;
+    final private BiFunction<Double,Double,Double> f, g;
+    final private NumericSolver solver;
     private String equationName;
     private String equation;
     private Solution solution;
@@ -30,10 +32,10 @@ public class Problem {
      * @param numberOfSteps The number of steps between a and b.
      * @throws SdeJException
      */
-    public Problem(final BivariateFunction f, final BivariateFunction g, final double initialValue, final double a, final double b, final int numberOfSteps) throws SdeJException {
+    public Problem(final BiFunction<Double,Double,Double> f, final BiFunction<Double,Double,Double> g, final double initialValue, final double a, final double b, final int numberOfSteps) throws SdeJException {
         this.f = f;
         this.g = g;
-        this.solver = new GenericDE();
+        this.solver = new NumericSolverImpl();
         this.initialValue = initialValue;
         setInterval(a,b);
         this.numberOfSteps = numberOfSteps;
@@ -50,10 +52,10 @@ public class Problem {
      * @param timeStep The number of time steps.
      * @throws SdeJException
      */
-    public Problem(final BivariateFunction f, final BivariateFunction g, final double initialValue, final double initialTime, final int numberOfSteps, final double timeStep) throws SdeJException {
+    public Problem(final BiFunction<Double,Double,Double> f, final BiFunction<Double,Double,Double> g, final double initialValue, final double initialTime, final int numberOfSteps, final double timeStep) throws SdeJException {
         this.f = f;
         this.g = g;
-        this.solver = new GenericDE();
+        this.solver = new NumericSolverImpl();
         this.initialTime = initialTime;
         this.initialValue = initialValue;
         this.numberOfSteps = numberOfSteps;
@@ -104,18 +106,6 @@ public class Problem {
         return solution;
     }
 
-    /**
-     *Returns an InterpolatedFunction using the data from the solution class.
-     * @return A class extending Function.
-     * @throws SdeJException
-     */
-    public InterpolatedFunction getSolutionAsFunction() throws SdeJException {
-        if (solution == null) {
-            solve();
-        }
-        return new InterpolatedFunction(solution.getX(),solution.getY());
-    }
-
     public Double getInitialValue() {
         return initialValue;
     }
@@ -135,11 +125,11 @@ public class Problem {
         return initialTime;
     }
 
-    public BivariateFunction getF() {
+    public BiFunction<Double,Double,Double> getF() {
         return f;
     }
 
-    public BivariateFunction getG() {
+    public BiFunction<Double,Double,Double> getG() {
         return g;
     }
 
