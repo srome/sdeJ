@@ -9,8 +9,8 @@ public class Solution {
     private final List<Double> y; //y values of solution
 
     public Solution() {
-        x = new ArrayList<Double>();
-        y = new ArrayList<Double>();
+        x = new ArrayList<>();
+        y = new ArrayList<>();
     }
 
     public Solution(List<Double> x, List<Double> y) {
@@ -23,7 +23,13 @@ public class Solution {
         this.y.add(y);
     }
 
-    public boolean equals(Solution solution) {
+    @Override
+    public boolean equals(final Object other) {
+        if (other == null || !(other instanceof Solution)) {
+            return false;
+        }
+
+        final Solution solution = (Solution) other;
         if (!this.dataPoints().equals(solution.dataPoints())) {
             return false;
         }
@@ -36,7 +42,6 @@ public class Solution {
                 return false;
             }
         }
-
         return true;
     }
 

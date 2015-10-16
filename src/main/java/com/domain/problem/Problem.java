@@ -1,6 +1,8 @@
-package com.domain;
+package com.domain.problem;
 
 
+import com.domain.SdeJException;
+import com.domain.Solution;
 import com.solver.NumericSolver;
 import com.solver.NumericSolverImpl;
 
@@ -12,8 +14,8 @@ import java.util.function.BiFunction;
  * @author Scott Rome
  */
 public class Problem {
-    final private BiFunction<Double,Double,Double> f, g;
-    final private NumericSolver solver;
+    private final BiFunction<Double,Double,Double> f, g;
+    private final NumericSolver solver;
     private String equationName;
     private String equation;
     private Solution solution;
@@ -32,12 +34,18 @@ public class Problem {
      * @param numberOfSteps The number of steps between a and b.
      * @throws SdeJException
      */
-    public Problem(final BiFunction<Double,Double,Double> f, final BiFunction<Double,Double,Double> g, final double initialValue, final double a, final double b, final int numberOfSteps) throws SdeJException {
+    protected Problem(final BiFunction<Double, Double, Double> f,
+                      final BiFunction<Double, Double, Double> g,
+                      final double initialValue,
+                      final double a,
+                      final double b,
+                      final int numberOfSteps) throws SdeJException {
         this.f = f;
         this.g = g;
         this.solver = new NumericSolverImpl();
         this.initialValue = initialValue;
-        setInterval(a,b);
+        this.initialTime = a;
+        this.endTime = b;
         this.numberOfSteps = numberOfSteps;
         calculateTimeStep();
     }
@@ -52,7 +60,12 @@ public class Problem {
      * @param timeStep The number of time steps.
      * @throws SdeJException
      */
-    public Problem(final BiFunction<Double,Double,Double> f, final BiFunction<Double,Double,Double> g, final double initialValue, final double initialTime, final int numberOfSteps, final double timeStep) throws SdeJException {
+    public Problem(final BiFunction<Double,Double,Double> f,
+                   final BiFunction<Double,Double,Double> g,
+                   final double initialValue,
+                   final double initialTime,
+                   final int numberOfSteps,
+                   final double timeStep) throws SdeJException {
         this.f = f;
         this.g = g;
         this.solver = new NumericSolverImpl();
@@ -60,18 +73,6 @@ public class Problem {
         this.initialValue = initialValue;
         this.numberOfSteps = numberOfSteps;
         this.timeStep = timeStep;
-    }
-
-    /**
-     * Sets the time interval that the problem should be solved on (i.e. (0,100))
-     * @param a start of the interval
-     * @param b end of the interval
-     * @return the current instance of Problem
-     */
-    public Problem setInterval(final Double a, final Double b) {
-        this.initialTime = a;
-        this.endTime = b;
-        return this;
     }
 
     /**
