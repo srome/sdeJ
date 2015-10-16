@@ -1,6 +1,6 @@
 package com.solver;
 
-import com.domain.Problem;
+import com.domain.problem.Problem;
 import com.domain.Solution;
 import org.springframework.stereotype.Service;
 
@@ -17,21 +17,24 @@ import java.util.function.BiFunction;
 @Service
 public class NumericSolverImpl implements NumericSolver {
 
-	public double getNextValue(final double S, final BiFunction<Double,Double,Double> f, final BiFunction<Double,Double,Double> g, final double t, final double dt, final Random randomNumberGenerator) {
+	public double getNextValue(final double S,
+                               final BiFunction<Double, Double, Double> f,
+                               final BiFunction<Double, Double, Double> g,
+                               final double t,
+                               final double dt) {
+        final Random randomNumberGenerator = new Random();
+        randomNumberGenerator.setSeed(System.currentTimeMillis());
+
 		return S + dS(S,f,g,t,dt, randomNumberGenerator);
 	}
 
     @Override
     public double dS(final double S, final BiFunction<Double,Double,Double> f, final BiFunction<Double,Double,Double> g, final double t, final double dt, final Random randomNumberGenerator) {
     // Price + d(Price)
-        double dS = f.apply(t, S)*dt + g.apply(t, S)* Math.sqrt(dt) * randomNumberGenerator.nextGaussian();
-        return dS;
+        return f.apply(t, S)*dt + g.apply(t, S)* Math.sqrt(dt) * randomNumberGenerator.nextGaussian();
     }
 
     public Solution solve(final Problem problem) {
-
-        final Random randomNumberGenerator = new Random();
-        randomNumberGenerator.setSeed(System.currentTimeMillis());
 
         final Solution solution = new Solution();
         double value = problem.getInitialValue();
@@ -46,7 +49,7 @@ public class NumericSolverImpl implements NumericSolver {
         //simulate differential equation
         for (int k = 0 ; k < problem.getNumberOfSteps() ; k++) {
             time += dt;
-            value = getNextValue(value, f, g, time, dt, randomNumberGenerator);
+            value = getNextValue(value, f, g, time, dt);
             solution.addPair(time,value);
         }
 

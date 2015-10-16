@@ -5,16 +5,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GeometricTransformation {
 
     public Solution transformToGeometric(final Solution solution, final double initialPosition) {
-        List<Double> y = solution.getY();
+        List<Double> yValues = solution.getY();
         List<Double> newY = new ArrayList<>();
-        for (double value : y) {
-            newY.add(initialPosition * Math.exp(value));
-        }
+        yValues.forEach(y -> newY.add(initialPosition * Math.exp(y)));
 
         return new Solution(solution.getX(), newY);
     }

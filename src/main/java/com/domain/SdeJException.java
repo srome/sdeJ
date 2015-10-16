@@ -3,7 +3,7 @@ package com.domain;
 
 public class SdeJException extends Exception {
 
-    SdeJException(String e) {
+    public SdeJException(String e) {
         super(e);
     }
 }
